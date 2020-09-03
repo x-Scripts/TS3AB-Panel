@@ -10,7 +10,7 @@
 
  3. Po instalacji wpisujemy komendę
   ```sh
-  > cd ts3aB
+  > cd ts3ab
   ```
   i uruchamiamy bota komendą 
   ```sh
