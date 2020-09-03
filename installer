@@ -1,0 +1,244 @@
+#!/bin/bash
+
+
+PATHAPP="ts3ab";
+DIRECTORY=$(pwd);
+SCREENNAME="TS3AudioBot";
+
+
+echo -e "\e[31m
+/******************************************************/
+/*            Wykonawca skryptu: xares                */
+/*              Wersja skryptu: 1.0                   */
+/*             Zakaz usuwania autora                  */
+/*         Kontakt: jutuby.net,x-scripts.pl           */
+/******************************************************/
+\e[0m";
+
+
+installPackage() {
+  sudo apt install ffmpeg --yes
+  sudo apt install python3-pip --yes
+  sudo apt install libopus-dev --yes
+  sudo pip3 install youtube-dl
+  wget https://packages.microsoft.com/config/$SYSTEM/$VERSION/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+  sudo dpkg -i packages-microsoft-prod.deb
+  sudo rm -rf packages-microsoft-prod.deb
+  sudo apt-get update --yes
+  sudo apt-get install -y apt-transport-https
+  sudo apt-get update --yes
+  sudo apt-get install -y dotnet-sdk-3.1
+  sudo apt install git
+}
+
+updateApp() {
+  sudo mv $DIRECTORY/$PATHAPP $DIRECTORY/$PATHAPP"_old"
+  sudo mkdir $DIRECTORY/$PATHAPP
+  sudo git clone --recurse-submodules https://github.com/Splamy/TS3AudioBot.git
+  cd TS3AudioBot
+  sudo git checkout develop
+  dotnet build --framework netcoreapp3.1 --configuration Release TS3AudioBot
+  sudo mv $DIRECTORY/$PATHAPP $DIRECTORY/$PATHAPP"_old"
+  sudo rm -rf $DIRECTORY/$PATHAPP
+  sudo mkdir $DIRECTORY/$PATHAPP
+  sudo mv TS3AudioBot/bin/Release/netcoreapp3.1/* $DIRECTORY/$PATHAPP
+  cd $DIRECTORY
+  sudo rm -rf TS3AudioBot
+  mv $DIRECTORY/$PATHAPP"_old"/bots $DIRECTORY/$PATHAPP
+  mv $DIRECTORY/$PATHAPP"_old"/logs $DIRECTORY/$PATHAPP
+  mv $DIRECTORY/$PATHAPP"_old"/rights.toml $DIRECTORY/$PATHAPP
+  mv $DIRECTORY/$PATHAPP"_old"/ts3audiobot.toml $DIRECTORY/$PATHAPP
+  mv $DIRECTORY/$PATHAPP"_old"/ts3audiobot.db $DIRECTORY/$PATHAPP
+  rm -rf $DIRECTORY/$PATHAPP"_old"
+  chmod 777 $DIRECTORY/$PATHAPP/rights.toml
+  chmod 777 $DIRECTORY/$PATHAPP/TS3AudioBot.dll
+  chmod 777 $DIRECTORY/$PATHAPP/logs
+  echo '<?xml version="1.0" encoding="utf-8" ?>
+  <nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        throwConfigExceptions="true">
+
+  	<targets>
+  		<!-- Config log to file -->
+  		<target xsi:type="File"
+  		        name="logfile"
+  		        encoding="utf-8"
+  		        fileName="${currentdir}/logs/${date:format=dd-MM-yyyy}.log"
+  		        layout="${date:format=HH\:mm\:ss.fff}|${pad:padding=5:inner=${level:uppercase=true}}|${mdc:item=BotId}|${callsite:includeNamespace=false} ${message}${onexception:${newline}${exception:format=tostring}}" />
+  		<!-- Config log to console -->
+  		<target xsi:type="ColoredConsole"
+  		        name="console"
+  		        encoding="utf-8"
+  		        layout="${time}|${pad:padding=5:inner=${level:uppercase=true}}|${mdc:item=BotId}| ${message}">
+  			<highlight-row condition="level == LogLevel.Info" foregroundColor="Cyan"/>
+  			<highlight-row condition="level == LogLevel.Warn" foregroundColor="Yellow"/>
+  			<highlight-row condition="level == LogLevel.Error" foregroundColor="Red"/>
+  			<highlight-row condition="level == LogLevel.Fatal" foregroundColor="Magenta"/>
+  		</target>
+  	</targets>
+
+  	<rules>
+  		<logger name="TS3AudioBot.*" minlevel="Info" writeTo="logfile" />
+  		<logger name="TS3AudioBot.*" minlevel="Info" writeTo="console" />
+  		<logger name="TSLib.*" minlevel="Info" writeTo="logfile" />
+  		<logger name="TSLib.*" minlevel="Info" writeTo="console" />
+  	</rules>
+  </nlog>
+' > $DIRECTORY/$PATHAPP/NLog.config
+}
+
+createApp() {
+  sudo git clone --recurse-submodules https://github.com/Splamy/TS3AudioBot.git
+  cd TS3AudioBot
+  sudo git checkout develop
+  dotnet build --framework netcoreapp3.1 --configuration Release TS3AudioBot
+  sudo rm -rf $DIRECTORY/$PATHAPP
+  sudo mkdir $DIRECTORY/$PATHAPP
+  sudo mv TS3AudioBot/bin/Release/netcoreapp3.1/* $DIRECTORY/$PATHAPP
+  cd $DIRECTORY
+  sudo rm -rf TS3AudioBot
+  mkdir $DIRECTORY/$PATHAPP/logs
+  chmod 777 $DIRECTORY/$PATHAPP/TS3AudioBot.dll
+  chmod 777 $DIRECTORY/$PATHAPP/logs
+  echo '<?xml version="1.0" encoding="utf-8" ?>
+  <nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        throwConfigExceptions="true">
+
+  	<targets>
+  		<!-- Config log to file -->
+  		<target xsi:type="File"
+  		        name="logfile"
+  		        encoding="utf-8"
+  		        fileName="${currentdir}/logs/${date:format=dd-MM-yyyy}.log"
+  		        layout="${date:format=HH\:mm\:ss.fff}|${pad:padding=5:inner=${level:uppercase=true}}|${mdc:item=BotId}|${callsite:includeNamespace=false} ${message}${onexception:${newline}${exception:format=tostring}}" />
+  		<!-- Config log to console -->
+  		<target xsi:type="ColoredConsole"
+  		        name="console"
+  		        encoding="utf-8"
+  		        layout="${time}|${pad:padding=5:inner=${level:uppercase=true}}|${mdc:item=BotId}| ${message}">
+  			<highlight-row condition="level == LogLevel.Info" foregroundColor="Cyan"/>
+  			<highlight-row condition="level == LogLevel.Warn" foregroundColor="Yellow"/>
+  			<highlight-row condition="level == LogLevel.Error" foregroundColor="Red"/>
+  			<highlight-row condition="level == LogLevel.Fatal" foregroundColor="Magenta"/>
+  		</target>
+  	</targets>
+
+  	<rules>
+  		<logger name="TS3AudioBot.*" minlevel="Info" writeTo="logfile" />
+  		<logger name="TS3AudioBot.*" minlevel="Info" writeTo="console" />
+  		<logger name="TSLib.*" minlevel="Info" writeTo="logfile" />
+  		<logger name="TSLib.*" minlevel="Info" writeTo="console" />
+  	</rules>
+  </nlog>
+' > $DIRECTORY/$PATHAPP/NLog.config
+
+}
+
+PS3="\e[32m>>> \e[0m"
+while [ 1 -eq 1 ] ; do
+    echo -e "\e[36mWybierz co chcesz zrobić:\e[0m"
+    echo -e "\e[34m1) Instalacja TS3AudioBot"
+    echo -e "2) Reinstalacja TS3AudioBot"
+    echo -e "3) Reinstalacja wtyczki youtube-dl"
+    echo -e "4) Aktualizacja wtyczki youtube-dl"
+    echo -e "5) Wyjście"
+    echo -e -n $PS3
+    read anwser
+    case "${anwser^^}" in
+        "1") SEL="installTS3AB"; break;;
+        "2") SEL="updateTS3AB"; break ;;
+        "3") SEL="reinstallyt"; break ;;
+        "4") SEL="updateyt"; break ;;
+        "5") echo -e "\e[31mAnulowano\e[0m"; exit ;;
+        *) echo -e "\e[31mAnulowano\e[0m"; exit;;
+    esac
+done
+
+if [ $SEL == "installTS3AB" ]; then
+  if [ -d $DIRECTORY/$PATHAPP ]; then
+    echo -e "\e[31mAplikacja jest już zainstalowana\e[0m"
+    exit;
+  fi
+  while [ 1 -eq 1 ] ; do
+      echo -e "\e[36mWybierz system:\e[0m"
+      echo -e "\e[34m1) Debian 8      5) Ubuntu 19.04"
+      echo -e "2) Debian 9      6) Ubuntu 19.10"
+      echo -e "3) Ubuntu 16.04  7) Ubuntu 20.04"
+      echo -e "4) Ubuntu 18.04  8) Wyjście"
+      echo -e -n $PS3
+      read anwser
+      case "${anwser^^}" in
+          "1") echo -e "\e[33mWybrano system Debian 8\e[0m"; VERSION="8"; SYSTEM="debian"; break;;
+          "2") echo -e "\e[33mWybrano system Debian 9\e[0m"; VERSION="9"; SYSTEM="debian"; break;;
+          "3") echo -e "\e[33mWybrano system Ubuntu 16.04\e[0m"; VERSION="16.04"; SYSTEM="ubuntu"; break;;
+          "4") echo -e "\e[33mWybrano system Ubuntu 18.04\e[0m"; VERSION="18.04"; SYSTEM="ubuntu"; break;;
+          "5") echo -e "\e[33mWybrano system Ubuntu 19.04\e[0m"; VERSION="19.04"; SYSTEM="ubuntu"; break;;
+          "6") echo -e "\e[33mWybrano system Ubuntu 19.10\e[0m"; VERSION="19.10"; SYSTEM="ubuntu"; break;;
+          "7") echo -e "\e[33mWybrano system Ubuntu 20.04\e[0m"; VERSION="20.04"; SYSTEM="ubuntu"; break;;
+          "8") echo -e "\e[31mAnulowano instalację\e[0m"; exit ;;
+          *) echo -e "\e[31mAnulowano instalację\e[0m"; exit;;
+      esac
+  done
+  echo  -e -n "\e[36mRozpoczynam instalację"
+  for (( i = 0; i < 5; i++ )); do
+    echo -n "."
+    sleep 1;
+  done
+  echo -e "\e[90m";
+  installPackage;
+  echo -e "\e[36mPomyślnie zainstalowano potrzebne pakiety"
+  echo -e "Tworzenie aplikacji\e[90m"
+  sleep 1;
+  createApp;
+  echo -e -n "\e[36mPomyślnie stworzono aplikację"
+  for (( i = 0; i < 5; i++ )); do
+    echo -e -n "."
+    sleep 1;
+  done
+  echo -e "Pomyślnie zakończono instalację\e[0m"
+  echo;
+
+elif [ $SEL == "reinstallyt" ]; then
+  echo -e -n "\e[36mRozpoczynam reinstalację wtyczki";
+  for (( i = 0; i < 5; i++ )); do
+    echo -e -n "."
+    sleep 1;
+  done
+  echo -e "\e[90m"
+  sudo pip3 uninstall youtube-dl --yes
+  sudo pip3 install youtube-dl
+  echo -e "\e[36mPomyślnie zakończono reinstalację wtyczki\e[0m"
+  echo;
+
+elif [ $SEL == "updateyt" ]; then
+  echo -e -n "\e[36mRozpoczynam aktualizację wtyczki";
+  for (( i = 0; i < 5; i++ )); do
+    echo -e -n "."
+    sleep 1;
+  done
+  echo -e "\e[90m"
+  pip3 install --upgrade youtube-dl
+  echo -e -e "\e[36mPomyślnie zakończono aktualizację wtyczki\e[0m"
+  echo;
+elif [ $SEL == "updateTS3AB" ]; then
+  if [ ! -d $DIRECTORY/$PATHAPP ]; then
+    echo -e "\e[31mNajpierw zainstaluj aplikację\e[0m"
+    exit;
+  elif screen -list | grep -q $SCREENNAME; then
+    echo -e "\e[31mNajpierw wyłącz aplikację\e[0m"
+    exit;
+  fi
+  echo -e -n "\e[36mRozpoczynam aktualizację aplikacji";
+  for (( i = 0; i < 5; i++ )); do
+    echo -e -n "."
+    sleep 1;
+  done
+  echo -e "\e[90m"
+
+  updateApp
+
+  echo -e -e "\e[36mPomyślnie zakończono aktualizację aplikacji\e[0m"
+  echo;
+
+fi
