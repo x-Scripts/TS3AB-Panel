@@ -39,7 +39,7 @@
         </div>
         <div class="form-group">
           <label class="form-control-label">Token aplikacji</label>
-          <input type="text" class="form-control app-token" placeholder="Zawiera id użytkowinika i token" value="<?= $settings['apiKey'] == null ? '' : $settings['apiToken']; ?>">
+          <input type="text" class="form-control app-token" placeholder="Zawiera id użytkowinika i token" value="<?= $settings['apiToken'] == null ? '' : $settings['apiToken']; ?>">
         </div>
         <div class="form-group">
           <label class="form-control-label">Czas zapytania(sekundy)</label>
