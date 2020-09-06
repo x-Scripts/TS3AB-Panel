@@ -282,11 +282,22 @@
  })
 
  $('.edit-apiFile').click(function() {
+   type = $('.select-apiType').val();
+   key = $('.api-key').val();
+   if(type == "externalhost") {
+     host = $('.api-local').val();
+   } else {
+     if(key == "") {
+       helper.generatePassword('.api-key',30);
+       key = $('.api-key').val();
+     }
+     host = "http://127.0.0.1";
+   }
    $.ajax({
      url: base_url + 'api/settings/apiFile', type: 'post', data: {
-       type: $('.select-apiType').val(),
-       host: $('.api-local').val(),
-       key: $('.api-key').val()
+       type: type,
+       host: host,
+       key: key
      }, success: function(data) {
        helper.alert(data.success,data.message);
      }
