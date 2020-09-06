@@ -59,10 +59,10 @@
       if($rights->num_rows()) {
         $rights = $rights->result_array()[0];
       } else {
-        $rights = '[]';
+        $rights = null;
       }
 
-      $rights['groups'] = json_decode($rights['groups'],true);
+      $rights['groups'] = @json_decode($rights['groups'],true);
 
       $result = array(
         'checkbox' => array(
