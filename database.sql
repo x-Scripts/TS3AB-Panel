@@ -77,7 +77,7 @@ CREATE TABLE `xDashBotRights` (
 --
 
 INSERT INTO `xDashBotRights` (`id`, `clientPanel`, `clientFiles`, `rightsCmd`, `groups`) VALUES
-('default', '[]', '[]', '[]');
+('default', '[]', '[]', '[]', '[]');
 
 -- --------------------------------------------------------
 
