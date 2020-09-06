@@ -59,7 +59,7 @@
       if($rights->num_rows()) {
         $rights = $rights->result_array()[0];
       } else {
-        $rights = null;
+        $rights = '[]';
       }
 
       $rights['groups'] = json_decode($rights['groups'],true);
