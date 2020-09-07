@@ -44,7 +44,7 @@ $permission = permission([
         <div class="container-fluid d-flex align-items-center justify-content-between">
           <div class="navbar-header">
             <!-- Navbar Header-->
-            <a href="index.html" class="navbar-brand">
+            <a href="<?= base_url(''); ?>" class="navbar-brand">
             <div class="brand-text brand-big visible text-uppercase"><strong class="text-primary">TS3</strong><strong>AudioBot</strong></div>
             <div class="brand-text brand-sm"><strong class="text-primary">T</strong><strong>AB</strong></div></a>
             <!-- Sidebar Toggle Btn-->
