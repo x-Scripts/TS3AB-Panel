@@ -91,6 +91,7 @@ createApp() {
   sudo git clone --recurse-submodules https://github.com/Splamy/TS3AudioBot.git
   cd TS3AudioBot
   sudo git checkout develop
+  sed -i 's/Environment.SystemData.AssemblyData.Version/"1.2.3.4"/g' TS3AudioBot/TS3AudioBot/Helper/WebWrapper.cs
   dotnet build --framework netcoreapp3.1 --configuration Release TS3AudioBot
   sudo rm -rf $DIRECTORY/$PATHAPP
   sudo mkdir $DIRECTORY/$PATHAPP
@@ -162,21 +163,23 @@ if [ $SEL == "installTS3AB" ]; then
   fi
   while [ 1 -eq 1 ] ; do
       echo -e "\e[36mWybierz system:\e[0m"
-      echo -e "\e[34m1) Debian 8      5) Ubuntu 19.04"
-      echo -e "2) Debian 9      6) Ubuntu 19.10"
-      echo -e "3) Ubuntu 16.04  7) Ubuntu 20.04"
-      echo -e "4) Ubuntu 18.04  8) Wyjście"
+      echo -e "\e[34m1) Debian 8      5) Ubuntu 18.04"
+      echo -e "2) Debian 9      6) Ubuntu 19.04"
+      echo -e "3) Debian 10     7) Ubuntu 19.10"
+      echo -e "4) Ubuntu 16.04  8) Ubuntu 20.04"
+      echo -e "9) Wyjście"
       echo -e -n $PS3
       read anwser
       case "${anwser^^}" in
           "1") echo -e "\e[33mWybrano system Debian 8\e[0m"; VERSION="8"; SYSTEM="debian"; break;;
           "2") echo -e "\e[33mWybrano system Debian 9\e[0m"; VERSION="9"; SYSTEM="debian"; break;;
-          "3") echo -e "\e[33mWybrano system Ubuntu 16.04\e[0m"; VERSION="16.04"; SYSTEM="ubuntu"; break;;
-          "4") echo -e "\e[33mWybrano system Ubuntu 18.04\e[0m"; VERSION="18.04"; SYSTEM="ubuntu"; break;;
-          "5") echo -e "\e[33mWybrano system Ubuntu 19.04\e[0m"; VERSION="19.04"; SYSTEM="ubuntu"; break;;
-          "6") echo -e "\e[33mWybrano system Ubuntu 19.10\e[0m"; VERSION="19.10"; SYSTEM="ubuntu"; break;;
-          "7") echo -e "\e[33mWybrano system Ubuntu 20.04\e[0m"; VERSION="20.04"; SYSTEM="ubuntu"; break;;
-          "8") echo -e "\e[31mAnulowano instalację\e[0m"; exit ;;
+          "3") echo -e "\e[33mWybrano system Debian 10\e[0m"; VERSION="10"; SYSTEM="debian"; break;;
+          "4") echo -e "\e[33mWybrano system Ubuntu 16.04\e[0m"; VERSION="16.04"; SYSTEM="ubuntu"; break;;
+          "5") echo -e "\e[33mWybrano system Ubuntu 18.04\e[0m"; VERSION="18.04"; SYSTEM="ubuntu"; break;;
+          "6") echo -e "\e[33mWybrano system Ubuntu 19.04\e[0m"; VERSION="19.04"; SYSTEM="ubuntu"; break;;
+          "7") echo -e "\e[33mWybrano system Ubuntu 19.10\e[0m"; VERSION="19.10"; SYSTEM="ubuntu"; break;;
+          "8") echo -e "\e[33mWybrano system Ubuntu 20.04\e[0m"; VERSION="20.04"; SYSTEM="ubuntu"; break;;
+          "9") echo -e "\e[31mAnulowano instalację\e[0m"; exit ;;
           *) echo -e "\e[31mAnulowano instalację\e[0m"; exit;;
       esac
   done
