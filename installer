@@ -38,6 +38,7 @@ updateApp() {
   cd TS3AudioBot
   sudo git checkout develop
   dotnet build --framework netcoreapp3.1 --configuration Release TS3AudioBot
+  sudo sed -i 's/Environment.SystemData.AssemblyData.Version/"1.2.3.4"/g' TS3AudioBot/TS3AudioBot/Helper/WebWrapper.cs
   sudo mv $DIRECTORY/$PATHAPP $DIRECTORY/$PATHAPP"_old"
   sudo rm -rf $DIRECTORY/$PATHAPP
   sudo mkdir $DIRECTORY/$PATHAPP
@@ -91,7 +92,7 @@ createApp() {
   sudo git clone --recurse-submodules https://github.com/Splamy/TS3AudioBot.git
   cd TS3AudioBot
   sudo git checkout develop
-  sed -i 's/Environment.SystemData.AssemblyData.Version/"1.2.3.4"/g' TS3AudioBot/TS3AudioBot/Helper/WebWrapper.cs
+  sudo sed -i 's/Environment.SystemData.AssemblyData.Version/"1.2.3.4"/g' TS3AudioBot/TS3AudioBot/Helper/WebWrapper.cs
   dotnet build --framework netcoreapp3.1 --configuration Release TS3AudioBot
   sudo rm -rf $DIRECTORY/$PATHAPP
   sudo mkdir $DIRECTORY/$PATHAPP
