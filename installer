@@ -35,26 +35,26 @@ updateApp() {
   sudo mv $DIRECTORY/$PATHAPP $DIRECTORY/$PATHAPP"_old"
   sudo mkdir $DIRECTORY/$PATHAPP
   sudo git clone --recurse-submodules https://github.com/Splamy/TS3AudioBot.git
-  cd TS3AudioBot
+  sudo cd TS3AudioBot
   sudo git checkout develop
-  dotnet build --framework netcoreapp3.1 --configuration Release TS3AudioBot
+  sudo dotnet build --framework netcoreapp3.1 --configuration Release TS3AudioBot
   sudo sed -i 's/Environment.SystemData.AssemblyData.Version/"1.2.3.4"/g' TS3AudioBot/TS3AudioBot/Helper/WebWrapper.cs
   sudo mv $DIRECTORY/$PATHAPP $DIRECTORY/$PATHAPP"_old"
   sudo rm -rf $DIRECTORY/$PATHAPP
   sudo mkdir $DIRECTORY/$PATHAPP
   sudo mv TS3AudioBot/bin/Release/netcoreapp3.1/* $DIRECTORY/$PATHAPP
-  cd $DIRECTORY
+  sudo cd $DIRECTORY
   sudo rm -rf TS3AudioBot
-  mv $DIRECTORY/$PATHAPP"_old"/bots $DIRECTORY/$PATHAPP
-  mv $DIRECTORY/$PATHAPP"_old"/logs $DIRECTORY/$PATHAPP
-  mv $DIRECTORY/$PATHAPP"_old"/rights.toml $DIRECTORY/$PATHAPP
-  mv $DIRECTORY/$PATHAPP"_old"/ts3audiobot.toml $DIRECTORY/$PATHAPP
-  mv $DIRECTORY/$PATHAPP"_old"/ts3audiobot.db $DIRECTORY/$PATHAPP
-  rm -rf $DIRECTORY/$PATHAPP"_old"
-  chmod 777 $DIRECTORY/$PATHAPP/rights.toml
-  chmod 777 $DIRECTORY/$PATHAPP/TS3AudioBot.dll
-  chmod 777 $DIRECTORY/$PATHAPP/logs
-  echo '<?xml version="1.0" encoding="utf-8" ?>
+  sudo mv $DIRECTORY/$PATHAPP"_old"/bots $DIRECTORY/$PATHAPP
+  sudo mv $DIRECTORY/$PATHAPP"_old"/logs $DIRECTORY/$PATHAPP
+  sudo mv $DIRECTORY/$PATHAPP"_old"/rights.toml $DIRECTORY/$PATHAPP
+  sudo mv $DIRECTORY/$PATHAPP"_old"/ts3audiobot.toml $DIRECTORY/$PATHAPP
+  sudo mv $DIRECTORY/$PATHAPP"_old"/ts3audiobot.db $DIRECTORY/$PATHAPP
+  sudo rm -rf $DIRECTORY/$PATHAPP"_old"
+  sudo chmod 777 $DIRECTORY/$PATHAPP/rights.toml
+  sudo chmod 777 $DIRECTORY/$PATHAPP/TS3AudioBot.dll
+  sudo chmod 777 $DIRECTORY/$PATHAPP/logs
+  sudo echo '<?xml version="1.0" encoding="utf-8" ?>
   <nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         throwConfigExceptions="true">
@@ -90,19 +90,19 @@ updateApp() {
 
 createApp() {
   sudo git clone --recurse-submodules https://github.com/Splamy/TS3AudioBot.git
-  cd TS3AudioBot
+  sudo cd TS3AudioBot
   sudo git checkout develop
   sudo sed -i 's/Environment.SystemData.AssemblyData.Version/"1.2.3.4"/g' TS3AudioBot/TS3AudioBot/Helper/WebWrapper.cs
-  dotnet build --framework netcoreapp3.1 --configuration Release TS3AudioBot
+  sudo dotnet build --framework netcoreapp3.1 --configuration Release TS3AudioBot
   sudo rm -rf $DIRECTORY/$PATHAPP
   sudo mkdir $DIRECTORY/$PATHAPP
   sudo mv TS3AudioBot/bin/Release/netcoreapp3.1/* $DIRECTORY/$PATHAPP
-  cd $DIRECTORY
+  sudo cd $DIRECTORY
   sudo rm -rf TS3AudioBot
-  mkdir $DIRECTORY/$PATHAPP/logs
-  chmod 777 $DIRECTORY/$PATHAPP/TS3AudioBot.dll
-  chmod 777 $DIRECTORY/$PATHAPP/logs
-  echo '<?xml version="1.0" encoding="utf-8" ?>
+  sudo mkdir $DIRECTORY/$PATHAPP/logs
+  sudo chmod 777 $DIRECTORY/$PATHAPP/TS3AudioBot.dll
+  sudo chmod 777 $DIRECTORY/$PATHAPP/logs
+  sudo echo '<?xml version="1.0" encoding="utf-8" ?>
   <nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         throwConfigExceptions="true">
