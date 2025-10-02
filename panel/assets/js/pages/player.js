@@ -17,25 +17,28 @@
   */
 
 //var audiotype = '';
-var position = 0;
+var currentTime = 0;
 var length = 0;
 var timeResult = '';
 var playerStatus = '';
 var seekTime = false;
 var dataVol;
+var modifyVolume = false;
+var start = 0;
 
 function time() {
   seek = $('.seek-song');
-  position = (Math.round(position) + 1);
+  //position = (position + 0.002);
 
   if(length == 0) {
     if(!seek.is(':disabled')) {
       seek.prop({disabled: true, max: 0, value: 0});
     }
   } else {
-    if(position <= length) {
+    if(currentTime <= length) {
       if(!seekTime) {
-        seek.prop({disabled: false, max: length, value: position});
+        currentTime = (Date.now()/1000 - start);
+        seek.prop({disabled: false, max: length, value: currentTime});
       }
     } else {
       clearInterval(timeResult);
@@ -47,7 +50,7 @@ function time() {
     }
   }
   if(!seekTime) {
-    $('.timeSong').html(helper.convertTime(position) + '/' + helper.convertTime(length));
+    $('.timeSong').html(helper.convertTime(currentTime) + '/' + helper.convertTime(length));
   }
 }
 
@@ -81,12 +84,13 @@ function player() {
               playPause.removeClass('mdi-play').addClass('mdi-pause');
             }
           }
-          position = data.value[0].Position;
+          currentTime = data.value[0].Position;
+          start = (Date.now()/1000 - data.value[0].Position);
           length = data.value[0].Length;
           if(length == 0) {
             $('.seek-song').prop({max: 0, value: 0, disabled: true});
           } else if(!seekTime) {
-            $('.seek-song').prop({max: length, value: position, disabled: false});
+            $('.seek-song').prop({max: length, value: currentTime, disabled: false, seek: "0.001"});
           }
           if(data.value[0].Title == '') {
             data.value[0].Title = 'Brak tytułu';
@@ -100,14 +104,14 @@ function player() {
             time();
             timeResult = setInterval(function() {
               time();
-            },1000);
+            },5);
           }
         }
         if(data.value[1] != null) {
           dataVol = Math.round(data.value[1]);
-          if(parseInt($('.change-volume').attr('value')) != dataVol) {
-            $('.volume').html(dataVol);
-            $('.change-volume').val(data.value[1]).attr('value',dataVol);
+          if(parseInt($('.change-volume').attr('value')) != dataVol && !modifyVolume) {
+            $('.volume').html(Math.round(dataVol));
+            $('.change-volume').val(Math.round(data.value[1])).attr('value',dataVol);
           }
         }
         if(data.value[2] != null) {
@@ -205,24 +209,30 @@ $('.stop').click(function() {
 })
 
 $('.change-volume').mousemove(function() {
-  $('.volume').html($(this).val());
+  $('.volume').html(Math.round($(this).val()));
 }).change(function() {
-  $('.volume').html($(this).val());
-  $(this).attr('value',$(this).val());
-  ajaxResult('volume',$(this).val().split('.')[0]);
+  $('.volume').html(Math.round($(this).val()));
+  $(this).attr('value',Math.round($(this).val()));
+  ajaxResult('volume',Math.round($(this).val().split('.')[0]));
+}).mousedown(function () {
+  modifyVolume = true;
+}).mouseup(function () {
+  modifyVolume = false;
 });
 
 $('.seek-song').mousemove(function() {
-  seekTime = true;
+
   $('.timeSong').html(helper.convertTime($(this).val()) + '/' + helper.convertTime(length));
-  setTimeout(function() {
-    seekTime = false;
-  },500);
+
 }).change(function() {
-  position = parseInt($(this).val());
+  start = Date.now()/1000 - $(this).val();
   $('.timeSong').html(helper.convertTime($(this).val()) + '/' + helper.convertTime(length));
   ajaxResult('seek',$(this).val());
-})
+}).mouseup(function () {
+  seekTime = false;
+}).mousedown(function () {
+  seekTime = true;
+});
 
 $('.play-song').click(function() {
   url = $('.song-url').val();
