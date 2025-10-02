@@ -15,7 +15,7 @@
           <div class="col-md-8">
             <div class="form-group">
               <label class="form-control-label"><span class="timeSong">00:00/00:00</span></label>
-              <input type="range" class="range seek-song" min="0" max="0" step="1">
+              <input type="range" class="range seek-song" min="0" max="0" step="0.001">
             </div>
             <div class="text-center">
               <button class="btn btn-dark repeat" data-status="off"><i id="icon-repeat" class="mdi mdi-repeat-off mdi-24px"></i></button>
@@ -29,7 +29,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label class="form-control-label">Głośność: <span class="volume">0</span></label>
-              <input type="range" class="range change-volume" min="0" value="0" max="100" step="1">
+              <input type="range" class="range change-volume" min="0" value="0" max="100" step="0.01">
             </div>
           </div>
         </div>
